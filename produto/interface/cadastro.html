@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+
+<body>
+		   <section class="layout-content" layout:fragment="corpo">
+	
+	        <nav class="navbar navbar-expand-md bg-light">
+	            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+	                <ul class="navbar-nav mr-auto">
+	                    <li class="nav-item active">
+	                        <i class="oi oi-caret-right"></i>
+	                        <span>Cadastrar Produtos</span>
+	                    </li>
+	                </ul>
+	                <a class="btn btn-primary btn-md" href="/produtos/listar" role="button">
+	                    <span class="oi oi-spreadsheet" title="Listar" aria-hidden="true"></span>
+	                    <span>Listar Produtos</span>
+	                </a>
+	            </div>
+	        </nav>
+	
+			<!-- Parte lógica utilizando o Thymeleaf -->
+			<!-- ? é um operador ternário -->
+	        <div class="container" id="cadastro">
+	        
+	        <div th:replace="fragments/alert"></div> <!-- Esta tag lança os alertas -->
+	        
+	             <form th:action="${produto.id == null} ? @{/produtos/salvar} : @{/produtos/editar}" 
+	            	  th:object="${produto}"method="POST">
+	            	   
+	            <div th:replace="fragments/validacao :: validacao"></div> <!-- Esta tag chama mensagens de validação -->
+	            
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="nome">Produto</label>
+	                        <input type="text" class="form-control" id="nome"
+	                               placeholder="Nome Produto" autofocus="autofocus" th:field="*{nome}"/>
+	                    </div>
+	                    <div class="form-group col-md-4">
+						<label for="marca">Marca</label> 
+							<select
+							id="marca" class="form-control" th:field="*{marca}">
+							<option value="">Selecione</option>
+							<option th:each="m : ${marcas}" th:value="${m.id}"
+								th:text="${m.nome}">Administração</option>
+							</select>
+						</div>
+						<div class="form-group col-md-4">
+						<label for="modelo">Modelo</label> 
+							<select
+							id="modelo" class="form-control" th:field="*{modelo}">
+							<option value="">Selecione</option>
+							<option th:each="d : ${modelos}" th:value="${d.id}"
+								th:text="${d.nome}">Administração</option>
+							</select>
+						</div>
+					</div>
+				<input type="hidden" id="id" th:field="*{id}" />
+				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+			</form>
+		</div>
+	</section>
+</body>
+</html>
